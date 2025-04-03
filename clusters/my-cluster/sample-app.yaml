@@ -1,0 +1,26 @@
+# clusters/my-cluster/sample-app.yaml
+
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: sample-app-repo
+  namespace: flux-system
+spec:
+  url: https://charts.bitnami.com/bitnami
+  interval: 5m
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: sample-app
+  namespace: default
+spec:
+  releaseName: sample-app
+  chart:
+    spec:
+      chart: nginx
+      sourceRef:
+        kind: HelmRepository
+        name: sample-app-repo
+  interval: 1m
